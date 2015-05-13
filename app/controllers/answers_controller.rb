@@ -116,13 +116,14 @@ class AnswersController < ApplicationController
       end
     end
 
-    similarity = AnswersHelper::get_similarity(solution.text, @answer.text)
+    ap = answer_params
+    similarity = AnswersHelper::get_similarity(solution.text, ap[:text])
+    ap[:score] = similarity
     @answer.score = similarity
+
     logger.info "-----> Similarity Score: #{similarity}"
 
     respond_to do |format|
-      ap = answer_params
-      ap[:score] = similarity
       if @answer.update!(ap)
         format.html { redirect_to event_answers_path(event_id), notice: 'Answer was successfully updated.' }
         format.json { render :show, status: :ok, location: @answer }
