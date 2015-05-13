@@ -13,17 +13,19 @@
 
   <tbody>
     <% @solutions.each do |solution| %>
-      <tr>
-        <td><%= solution.text %></td>
-        <td><%= solution.provider %></td>
-        <td><%= link_to 'Show', solution %></td>
-        <td><%= link_to 'Edit', "solutions/#{solution.id}/edit" %></td>
-        <td><%= link_to 'Destroy', solution, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
+      <% if solution %>
+        <tr>
+          <td><%= solution.text %></td>
+          <td><%= solution.provider %></td>
+          <td><%= link_to 'Show', "/events/#{@event.id}/solutions/#{solution.id}" %></td>
+          <td><%= link_to 'Edit', "/events/#{@event.id}/solutions/#{solution.id}/edit" %></td>
+          <td><%= link_to 'Destroy', "/events/#{@event.id}/solutions/#{solution.id}", method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        </tr>
+      <% end %>
     <% end %>
   </tbody>
 </table>
 
 <br>
 
-<%= link_to 'New Solution', new_solution_path %>
+<%= link_to 'New Solution', new_event_solutions_path(params[:id]) %>

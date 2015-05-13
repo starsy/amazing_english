@@ -2,7 +2,7 @@ require 'gsl'
 require 'tf-idf-similarity'
 
 class AnswersController < ApplicationController
-  before_action :set_answer, only: [:show, :update, :destroy]
+  before_action :set_answer, only: [:update, :destroy]
 
   # GET /answers
   # GET /answers.json
@@ -13,6 +13,9 @@ class AnswersController < ApplicationController
   # GET /answers/1
   # GET /answers/1.json
   def show
+    @answer = Answer.find(params[:answer_id])
+    @event = Event.find(params[:id])
+
   end
 
   def show_event_answers
@@ -39,6 +42,7 @@ class AnswersController < ApplicationController
   def edit_event_answer
     params[:event_id] = params[:id]
     params[:id] = params[:answer_id] || params[:id]
+    @event = Event.find(params[:event_id])
     @answer = Answer.find(params[:id])
 
     respond_to do |format|
@@ -47,39 +51,34 @@ class AnswersController < ApplicationController
     end
   end
 
-  def get_similarity(t1, t2)
-    solution_doc = TfIdfSimilarity::Document.new(t1)
-    answer_doc = TfIdfSimilarity::Document.new(t2)
-    corpus = [solution_doc, answer_doc]
-    model = TfIdfSimilarity::TfIdfModel.new(corpus, library: :gsl)
-    matrix = model.similarity_matrix
-    similarity = matrix[0, 1]
-    return similarity
-  end
-
   # POST /answers
   # POST /answers.json
   def create
     @answer = Answer.new(answer_params)
-    @answer[:event_id] = params[:event_id]
-    logger.info "Event_ID: #{@answer[:event_id]}"
+    event_id = params[:event_id]
 
-    solution = Solution.find_by_event_id @answer[:event_id]
+
+
+
+    @answer[:event_id] = event_id
+    logger.info "Event_ID: #{event_id}"
+
+    solution = Solution.find_by event_id: event_id
 
     if solution.nil?
       respond_to do |format|
-          format.html { redirect_to @answer, error: 'Cannot find solution in this event' }
+          format.html { redirect_to "/events/#{event_id}/answers", error: 'Cannot find solution in this event' }
           format.json { render :show, status: :created, location: @answer }
       end
     end
 
-    similarity = get_similarity(solution.text, @answer.text)
+    similarity = AnswersHelper::get_similarity(solution.text, @answer.text)
     @answer.score = similarity
     logger.info "-----> Similarity Score: #{similarity}"
 
     respond_to do |format|
       if @answer.save
-        format.html { redirect_to @answer, notice: 'Answer was successfully created.' }
+        format.html { redirect_to "/events/#{event_id}/answers", notice: 'Answer was successfully created.' }
         format.json { render :show, status: :created, location: @answer }
       else
         format.html { render :new }
@@ -108,7 +107,7 @@ class AnswersController < ApplicationController
     event_id = params[:id]
     @answer = Answer.find(params[:answer_id])
 
-    solution = Solution.find_by_event_id @answer[:event_id]
+    solution = Solution.find_by_event_id event_id
 
     if solution.nil?
       respond_to do |format|
@@ -117,7 +116,7 @@ class AnswersController < ApplicationController
       end
     end
 
-    similarity = get_similarity(solution.text, @answer.text)
+    similarity = AnswersHelper::get_similarity(solution.text, @answer.text)
     @answer.score = similarity
     logger.info "-----> Similarity Score: #{similarity}"
 
@@ -125,7 +124,7 @@ class AnswersController < ApplicationController
       ap = answer_params
       ap[:score] = similarity
       if @answer.update!(ap)
-        format.html { redirect_to event_answers_path(@answer[:event_id]), notice: 'Answer was successfully updated.' }
+        format.html { redirect_to event_answers_path(event_id), notice: 'Answer was successfully updated.' }
         format.json { render :show, status: :ok, location: @answer }
       else
         format.html { render :edit }

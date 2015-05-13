@@ -14,14 +14,16 @@
 
   <tbody>
     <% @answers.each do |answer| %>
-      <tr>
-        <td><%= answer.text %></td>
-        <td><%= answer.trainee %></td>
-        <td><%= answer.score %></td>
-        <td><%= link_to 'Show', answer %></td>
-        <td><%= link_to 'Edit', "answers/#{answer.id}/edit" %></td>
-        <td><%= link_to 'Destroy', answer, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
+      <% if answer %>
+        <tr>
+          <td><%= answer.text %></td>
+          <td><%= answer.trainee %></td>
+          <td><%= answer.score %></td>
+          <td><%= link_to 'Show', "/events/#{params[:id]}/answers/#{answer.id}" %></td>
+          <td><%= link_to 'Edit', "/events/#{params[:id]}/answers/#{answer.id}/edit" %></td>
+          <td><%= link_to 'Destroy', "/events/#{params[:id]}/answers/#{answer.id}", method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        </tr>
+      <% end %>
     <% end %>
   </tbody>
 </table>

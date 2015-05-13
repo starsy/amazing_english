@@ -1,20 +1,21 @@
 Rails.application.routes.draw do
-  resources :answers
-  resources :solutions
+  #resources :answers
+  #resources :solutions
 
   resources :events do
     member do
-      get 'answers', to: 'answers#show_event_answers'
-      get 'answers/:answer_id/edit', to: 'answers#edit_event_answer'
-      patch 'answers/:answer_id', to: 'answers#update_event_answer'
-    end
+      get 'answers' => 'answers#show_event_answers'
+      get 'answers/new' => 'answers#new'
+      get 'answers/:answer_id' => 'answers#show'
+      get 'answers/:answer_id/edit' => 'answers#edit_event_answer'
+      patch 'answers/:answer_id' => 'answers#update_event_answer'
 
-    member do
-      get 'solutions', to: 'solutions#show_event_solutions'
-      get 'solutions/:solution_id/edit', to: 'solutions#edit_event_solution'
-      patch 'solutions/:solution_id', to: 'solutions#update_event_solution'
+      get 'solutions' => 'solutions#show_event_solutions'
+      get 'solutions/new' => 'solutions#new'
+      get 'solutions/:solution_id' => 'solutions#show'
+      get 'solutions/:solution_id/edit' => 'solutions#edit_event_solution'
+      patch 'solutions/:solution_id' => 'solutions#update_event_solution'
     end
-
 
     resource :solutions
     resource :answers

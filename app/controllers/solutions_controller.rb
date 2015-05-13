@@ -10,13 +10,13 @@ class SolutionsController < ApplicationController
   # GET /solutions/1
   # GET /solutions/1.json
   def show
+
   end
 
   def show_event_solutions
-    logger.info "----> #{params.inspect}"
-
+    @event = Event.find params[:id]
     @solutions = [Solution.find_by(event_id: params[:id])]
-    logger.info "--------> #{@solutions.inspect}"
+    #logger.info "--------> #{@solutions.inspect}"
 
     respond_to do |format|
       format.html { render :index }
@@ -27,6 +27,7 @@ class SolutionsController < ApplicationController
   # GET /solutions/new
   def new
     @solution = Solution.new
+    @event = Event.find params[:id]
   end
 
   # GET /solutions/1/edit
@@ -37,6 +38,7 @@ class SolutionsController < ApplicationController
   def edit_event_solution
     params[:event_id] = params[:id]
     params[:id] = params[:solution_id] || params[:id]
+    @event = Event.find(params[:event_id])
     @solution = Solution.find(params[:id])
 
     respond_to do |format|
@@ -49,12 +51,13 @@ class SolutionsController < ApplicationController
   # POST /solutions.json
   def create
     @solution = Solution.new(solution_params)
-    @solution[:event_id] = params[:event_id]
-    logger.info "Event_ID: #{@solution[:event_id]}"
+    event_id = params[:event_id]
+    @solution[:event_id] = event_id
+    logger.info "Event_ID: #{event_id}"
 
     respond_to do |format|
       if @solution.save
-        format.html { redirect_to @solution, notice: 'Solution was successfully created.' }
+        format.html { redirect_to "/events/#{event_id}/solutions", notice: 'Solution was successfully created.' }
         format.json { render :show, status: :created, location: @solution }
       else
         format.html { render :new }
@@ -71,31 +74,34 @@ class SolutionsController < ApplicationController
 
     params = solution_params
 
-    solution = Solution.find_by :id, solution_id
+    @solution = Solution.find_by id: solution_id
 
-    if solution.nil?
+    if @solution.nil?
       respond_to do |format|
-        format.html { redirect_to @answer, error: 'Cannot find solution in this event' }
+        format.html { redirect_to event_solutions_path(event_id), error: 'Cannot find solution in this event' }
         format.json { render :show, status: :created, location: @answer }
       end
     end
 
-    @answers = Answer.where :event_id, event_id || []
+    @answers = Answer.where event_id: event_id || []
 
+    failed_answer = []
     @answers.each do |answer|
-      new_similarity = get_similarity(solution.text, answer.text)
+      new_similarity = AnswersHelper::get_similarity(@solution.text, answer.text)
       success = answer.update score: new_similarity
+
+      if !success
+        logger.warn "Unable to update score for answer: #{answer.id}"
+        failed_answer << answer
+      else
+        logger.info "New score for answer: #{answer.id} is #{new_similarity}"
+      end
     end
 
-    similarity = get_similarity(solution.text, @answer.text)
-    @answer.score = similarity
-    logger.info "-----> Similarity Score: #{similarity}"
 
     respond_to do |format|
-      ap = answer_params
-      ap[:score] = similarity
-      if @answer.update!(ap)
-        format.html { redirect_to event_answers_path(@answer[:event_id]), notice: 'Answer was successfully updated.' }
+      if failed_answer.empty?
+        format.html { redirect_to event_solutions_path(event_id), notice: 'Solution was successfully updated.' }
         format.json { render :show, status: :ok, location: @answer }
       else
         format.html { render :edit }
@@ -132,7 +138,7 @@ class SolutionsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_solution
-      @solution = Solution.find(params[:id])
+      @solution = Solution.find(params[:solution_id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
