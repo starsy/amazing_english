@@ -1,15 +1,24 @@
 <p id="notice"><%= notice %></p>
 
+<%
+   solution_text = @answer.event.solution.text
+   answer_text = @answer.text
+ %>
+
 <p>
   <strong>Answer Text:</strong>
-  <%= @answer.text %>
+  <%= answer_text %>
 </p>
 
 <p>
   <strong>Solution Text:</strong>
-  <%= @answer.event.solution.text %>
+  <%= solution_text %>
 </p>
 
+<p>
+  <strong>Diff:</strong>
+  <%= Diffy::Diff.new(solution_text, answer_text).to_s(:html).html_safe %>
+</p>
 
 <p>
   <strong>Trainee:</strong>
