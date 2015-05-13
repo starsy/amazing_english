@@ -1,5 +1,5 @@
 class SolutionsController < ApplicationController
-  before_action :set_solution, only: [:show, :edit, :update, :destroy]
+  before_action :set_solution, only: [:edit, :update, :destroy]
 
   # GET /solutions
   # GET /solutions.json
@@ -10,7 +10,8 @@ class SolutionsController < ApplicationController
   # GET /solutions/1
   # GET /solutions/1.json
   def show
-
+    @solution = Solution.find(params[:solution_id])
+    @event = Event.find(params[:id])
   end
 
   def show_event_solutions
@@ -72,9 +73,8 @@ class SolutionsController < ApplicationController
     event_id = params[:id]
     solution_id = params[:solution_id]
 
-    params = solution_params
-
     @solution = Solution.find_by id: solution_id
+    @event = Event.find(event_id)
 
     if @solution.nil?
       respond_to do |format|
@@ -86,8 +86,9 @@ class SolutionsController < ApplicationController
     @answers = Answer.where event_id: event_id || []
 
     failed_answer = []
+    sp = solution_params
     @answers.each do |answer|
-      new_similarity = AnswersHelper::get_similarity(@solution.text, answer.text)
+      new_similarity = AnswersHelper::get_similarity(sp[:text], answer.text)
       success = answer.update score: new_similarity
 
       if !success
@@ -100,6 +101,7 @@ class SolutionsController < ApplicationController
 
 
     respond_to do |format|
+      @solution.update! sp
       if failed_answer.empty?
         format.html { redirect_to event_solutions_path(event_id), notice: 'Solution was successfully updated.' }
         format.json { render :show, status: :ok, location: @answer }

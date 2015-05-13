@@ -10,5 +10,6 @@
   <%= @solution.provider %>
 </p>
 
-<%= link_to 'Edit', edit_solution_path(@solution) %> |
-<%= link_to 'Back', solutions_path %>
+
+<%= link_to 'Edit', "/events/#{@event.id}/solutions/#{@solution.id}/edit" %> |
+<%= link_to 'Back', "/events/#{@event.id}/solutions" %>

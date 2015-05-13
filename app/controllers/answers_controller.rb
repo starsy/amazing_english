@@ -1,6 +1,3 @@
-require 'gsl'
-require 'tf-idf-similarity'
-
 class AnswersController < ApplicationController
   before_action :set_answer, only: [:update, :destroy]
 
@@ -15,11 +12,10 @@ class AnswersController < ApplicationController
   def show
     @answer = Answer.find(params[:answer_id])
     @event = Event.find(params[:id])
-
   end
 
   def show_event_answers
-    @answers = Answer.where(event_id: params[:id]) || []
+    @answers = Answer.where(event_id: params[:id]).order!(score: :desc) || []
     logger.info "--------> #{@answers.inspect}"
 
     respond_to do |format|

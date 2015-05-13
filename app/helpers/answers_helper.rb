@@ -1,3 +1,6 @@
+require 'gsl'
+require 'tf-idf-similarity'
+
 module AnswersHelper
   def self.get_similarity(t1, t2)
     solution_doc = TfIdfSimilarity::Document.new(t1)

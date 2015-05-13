@@ -1,8 +1,10 @@
-source 'https://rubygems.org'
+source 'https://ruby.taobao.org'
+#source 'https://rubygems.org'
 
 gem 'matrix'
 gem 'rb-gsl'
 gem 'tf-idf-similarity'
+gem 'diffy'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.1'
