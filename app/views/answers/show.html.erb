@@ -1,8 +1,8 @@
 <p id="notice"><%= notice %></p>
 
 <%
-   solution_text = @answer.event.solution.text
-   answer_text = @answer.text
+   solution_text = @answer.event.solution.text.delete("\n").delete("\r")
+   answer_text = @answer.text.delete("\n").delete("\r")
  %>
 
 <p>
@@ -17,7 +17,7 @@
 
 <p>
   <strong>Diff:</strong>
-  <%= Diffy::Diff.new(solution_text, answer_text).to_s(:html).html_safe %>
+  <%= Diffy::Diff.new(answer_text, solution_text).to_s(:html).html_safe %>
 </p>
 
 <p>
