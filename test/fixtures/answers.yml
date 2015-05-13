@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  text: MyText
+  trainee: MyString
+  score: 1.5
+
+two:
+  text: MyText
+  trainee: MyString
+  score: 1.5
