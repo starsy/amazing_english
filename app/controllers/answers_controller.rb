@@ -1,5 +1,5 @@
 class AnswersController < ApplicationController
-  before_action :set_answer, only: [:update, :destroy]
+  before_action :set_answer, only: [:update]
 
   # GET /answers
   # GET /answers.json
@@ -36,10 +36,8 @@ class AnswersController < ApplicationController
 
   # GET /answers/1/edit
   def edit_event_answer
-    params[:event_id] = params[:id]
-    params[:id] = params[:answer_id] || params[:id]
-    @event = Event.find(params[:event_id])
-    @answer = Answer.find(params[:id])
+    @event = Event.find(params[:id])
+    @answer = Answer.find(params[:answer_id])
 
     respond_to do |format|
       format.html { render :edit }
@@ -104,10 +102,11 @@ class AnswersController < ApplicationController
     @answer = Answer.find(params[:answer_id])
 
     solution = Solution.find_by_event_id event_id
+    logger.info "========> event_id: #{event_id}"
 
     if solution.nil?
       respond_to do |format|
-        format.html { redirect_to @answer, error: 'Cannot find solution in this event' }
+        format.html { redirect_to event_answers_path(event_id), error: 'Cannot find solution in this event' }
         format.json { render :show, status: :created, location: @answer }
       end
     end
@@ -133,9 +132,12 @@ class AnswersController < ApplicationController
   # DELETE /answers/1
   # DELETE /answers/1.json
   def destroy
+    event_id = params[:id]
+    @answer = Answer.find(params[:answer_id])
+
     @answer.destroy
     respond_to do |format|
-      format.html { redirect_to answers_url, notice: 'Answer was successfully destroyed.' }
+      format.html { redirect_to event_answers_path(event_id), notice: 'Answer was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

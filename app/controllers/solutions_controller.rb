@@ -37,10 +37,8 @@ class SolutionsController < ApplicationController
 
   # GET /answers/1/edit
   def edit_event_solution
-    params[:event_id] = params[:id]
-    params[:id] = params[:solution_id] || params[:id]
-    @event = Event.find(params[:event_id])
-    @solution = Solution.find(params[:id])
+    @event = Event.find(params[:id])
+    @solution = Solution.find(params[:solution_id])
 
     respond_to do |format|
       format.html { render :edit }
