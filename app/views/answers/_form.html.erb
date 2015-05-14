@@ -2,7 +2,7 @@
 url = "/events/#{params[:id]}/answers/#{params[:answer_id]}"
 %>
 
-<%= form_for(@answer, url: url) do |f| %>
+<%= bootstrap_form_for(@answer, url: url) do |f| %>
   <% if @answer.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@answer.errors.count, "error") %> prohibited this answer from being saved:</h2>
@@ -15,23 +15,10 @@ url = "/events/#{params[:id]}/answers/#{params[:answer_id]}"
     </div>
   <% end %>
 
-  <div class="field">
-    <%= f.label :event_id %>: <%= params[:event_id] %><br>
-  </div>
-
-  <div class="field">
-    <%= f.label :text %><br>
-    <%= f.text_area :text %>
-  </div>
-  <div class="field">
-    <%= f.label :trainee %><br>
+    <%= f.label :event_id %>: <%= params[:id] %><br>
+    <%= f.text_area :text, size: "10x15"%>
     <%= f.text_field :trainee %>
-  </div>
-  <div class="field">
-    <%= f.label :score %><br>
     <%= f.text_field :score %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
+    <%= f.submit class: "btn btn-success"%>
 <% end %>
+

@@ -3,32 +3,37 @@
 <%
    solution_text = @answer.event.solution.text.delete("\n").delete("\r")
    answer_text = @answer.text.delete("\n").delete("\r")
- %>
+%>
 
-<p>
-  <strong>Answer Text:</strong>
-  <%= answer_text %>
-</p>
-
-<p>
-  <strong>Solution Text:</strong>
-  <%= solution_text %>
-</p>
-
-<p>
-  <strong>Diff:</strong>
-  <%= Diffy::Diff.new(answer_text, solution_text).to_s(:html).html_safe %>
-</p>
-
-<p>
-  <strong>Trainee:</strong>
+<strong>Trainee:</strong>
+<div class="">
   <%= @answer.trainee %>
-</p>
+</div>
+<hr>
 
-<p>
-  <strong>Score:</strong>
+<strong>Score:</strong>
+<div class="">
   <%= @answer.score %>
-</p>
+</div>
+<hr>
+
+<strong>Answer Text:</strong>
+<div class="y">
+  <%= answer_text %>
+</div>
+<hr>
+
+<strong class="">Solution Text:</strong>
+<div class="">
+  <%= solution_text %>
+</div>
+<hr>
+
+<strong>Diff:</strong>
+<div class="">
+  <%= Diffy::Diff.new(answer_text, solution_text).to_s(:html).html_safe %>
+</div>
+<hr>
 
 <%= link_to 'Edit', "/events/#{@event.id}/answers/#{@answer.id}/edit" %> |
 <%= link_to 'Back', "/events/#{@event.id}/answers" %>

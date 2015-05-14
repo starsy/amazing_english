@@ -1,5 +1,5 @@
 
-<%= form_for(@event) do |f| %>
+<%= bootstrap_form_for(@event) do |f| %>
   <% if @event.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@event.errors.count, "error") %> prohibited this event from being saved:</h2>
@@ -12,19 +12,9 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= f.label :title %><br>
-    <%= f.text_area :title %>
-  </div>
-  <div class="field">
-    <%= f.label :trainer %><br>
-    <%= f.text_area :trainer %>
-  </div>
-  <div class="field">
-    <%= f.label :date %><br>
+    <%= f.text_field :title %>
+    <%= f.text_field :trainer %>
     <%= f.date_select :date %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
+    <%= f.submit class: "btn btn-success" %>
+
 <% end %>

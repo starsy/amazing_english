@@ -1,19 +1,26 @@
 <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Title:</strong>
-  <%= @event.title %>
-</p>
+<h1>
+  Event: <%=  @event.title %>
+</h1>
 
-<p>
-  <strong>Trainer:</strong>
+<table class="table table-hover">
+  <tr>
+  <th>Trainer:</th>
+    <td>
   <%= @event.trainer %>
-</p>
+    </td>
+  </tr>
 
-<p>
-  <strong>Date:</strong>
+  <tr>
+  <th>Date:</th>
+    <td>
   <%= @event.date %>
-</p>
+    </td>
+  </tr>
+</table>
+
+<hr>
 
 <%= link_to 'Edit', edit_event_path(@event) %> |
 <%= link_to 'Back', events_path %>

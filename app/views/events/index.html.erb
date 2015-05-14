@@ -1,14 +1,18 @@
 <p id="notice"><%= notice %></p>
 
-<h1>Listing Events</h1>
+<h1>Listing Events
+  <%= link_to new_event_path do %>
+    <span class="glyphicon glyphicon-plus small"></span>
+  <% end %>
+</h1>
 
-<table>
+<table class="table table-hover">
   <thead>
     <tr>
       <th>Title</th>
       <th>Trainer</th>
       <th>Date</th>
-      <th colspan="3"></th>
+      <th class="text-right">Action</th>
     </tr>
   </thead>
 
@@ -18,16 +22,35 @@
         <td><%= event.title %></td>
         <td><%= event.trainer %></td>
         <td><%= event.date %></td>
-        <td><%= link_to 'Show', event %></td>
-        <td><%= link_to 'Edit', edit_event_path(event) %></td>
-        <td><%= link_to 'List Solution', event_solutions_path(event) %></td>
-        <td><%= link_to 'List Answers', event_answers_path(event) %></td>
-        <td><%= link_to 'Destroy', event, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td class="text-right"><%= link_to event do %>
+            <span class="glyphicon glyphicon-zoom-in"></span>
+          <% end %> |
+
+        <%= link_to edit_event_path(event) do %>
+            <span class="glyphicon glyphicon-pencil"></span>
+          <% end %> |
+
+          <%= link_to event_solutions_path(event) do %>
+            <span class="glyphicon glyphicon-file" title="Manage Solution"></span>
+            Solution
+            <span class="badge"><%= Solution.where(event_id: event.id).count %></span>
+          <% end %> |
+
+
+          <%= link_to event_answers_path(event) do %>
+            <span class="glyphicon glyphicon-inbox"></span>
+            Homework
+            <span class="badge"><%= Answer.where(event_id: event.id).count %></span>
+          <% end %> |
+          <%= link_to event, method: :delete, data: { confirm: 'Are you sure?' } do %>
+              <span class="glyphicon glyphicon-remove text-danger"></span>
+            <% end %>
+          </td>
       </tr>
     <% end %>
   </tbody>
 </table>
 
-<br>
+<hr>
 
-<%= link_to 'New Event', new_event_path %>
+
