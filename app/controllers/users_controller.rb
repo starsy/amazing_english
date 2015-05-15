@@ -44,7 +44,9 @@ class UsersController < ApplicationController
   # PATCH/PUT /users/1.json
   def update
     respond_to do |format|
-      if @user.update(user_params)
+      p = user_params
+
+      if @user.update(p)
         flash[:success] = 'User was successfully updated.'
         format.html { redirect_to @user }
         format.json { render :show, status: :ok, location: @user }
@@ -78,6 +80,6 @@ class UsersController < ApplicationController
     #end
 
   def user_params
-    params.require(:user).permit(:email, :password, :password_confirmation)
+    params.require(:user).permit(:email, :password, :password_confirmation, :is_admin, :is_trainer)
   end
 end

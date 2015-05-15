@@ -10,10 +10,13 @@
 
 <div class="nav text-right">
   <% if current_user %>
-    <%= link_to "Edit Profile", edit_user_path(current_user.id) %> |
+    <%= current_user.email %> |
+    <% if current_user.is_admin %>
+      <%= link_to "Create User", new_user_path %> |
+    <% end %>
+    <%= link_to "Edit User", edit_user_path(current_user.id) %> |
     <%= link_to "Logout", :logout, method: :post %>
   <% else %>
-    <%= link_to "Register", new_user_path %> |
     <%= link_to "Login", :login %>
   <% end %>
 </div>

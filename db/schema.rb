@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150515112206) do
+ActiveRecord::Schema.define(version: 20150515173203) do
 
   create_table "answers", force: :cascade do |t|
     t.text     "text",       limit: 65535
@@ -53,6 +53,8 @@ ActiveRecord::Schema.define(version: 20150515112206) do
     t.string   "salt",             limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "is_admin",         limit: 1
+    t.boolean  "is_trainer",       limit: 1
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree

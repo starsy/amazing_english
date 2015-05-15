@@ -10,6 +10,7 @@ gem 'bootstrap-sass'
 gem 'bootstrap_form'
 gem 'autoprefixer-rails'
 gem 'sorcery'
+gem "pundit"
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.1'

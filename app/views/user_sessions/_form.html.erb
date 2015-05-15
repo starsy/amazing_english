@@ -2,9 +2,9 @@
 <hr>
 
 <%= bootstrap_form_tag layout: :inline, method: :post do |f| %>
-    <%= text_field_tag 'email', nil, class: 'form-control', placeholder: "Enter CEC ID"%>
+    <%= text_field_tag 'email', nil, class: 'form-control', placeholder: "Enter User ID"%>
     <%= password_field_tag 'password', nil, class: 'form-control', placeholder: "Enter Password"%>
-    <%= submit_tag "Login", class: 'btn btn-default' %>
+    <%= submit_tag "Login", class: 'btn btn-success ' %>
 <% end %>
 
 <hr>

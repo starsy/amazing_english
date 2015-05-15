@@ -1,7 +1,21 @@
+<%
+  if @to_create
+   ph_text = 'Password'
+   email_option = {}
+  else
+   ph_text = 'Leave Blank for Not to Change'
+   email_option = {disabled: true}
+end
+%>
+
 <%= bootstrap_form_for(@user) do |f| %>
-    <%= f.text_field :email %>
-    <%= f.password_field :password %>
-    <%= f.password_field :password_confirmation %>
+    <%= f.text_field :email, email_option %>
+    <%= f.password_field :password, placeholder: ph_text %>
+    <%= f.password_field :password_confirmation, placeholder: ph_text + " Again" %>
+    <% if @user.is_admin %>
+      <%= f.check_box :is_admin do %>Is Admin?<% end %>
+      <%= f.check_box :is_trainer do %>Is Trainer?<% end %>
+    <% end %>
     <%= f.submit class: 'btn btn-success'%>
 <% end %>
 

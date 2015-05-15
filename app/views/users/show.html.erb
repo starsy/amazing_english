@@ -1,19 +1,21 @@
-<p id="notice"><%= notice %></p>
+<table class="table table-hover">
+  <tr>
+    <th>Email:</th>
+    <td><%= @user.email %></td>
+  </tr>
 
-<p>
-  <strong>Email:</strong>
-  <%= @user.email %>
-</p>
+  <tr>
+    <th>Is Admin</th>
+    <td><%= @user.is_admin ? "Yes" : "No" %></td>
+  </tr>
 
-<p>
-  <strong>Crypted password:</strong>
-  <%= @user.crypted_password %>
-</p>
+  <tr>
+    <th>Is Trainer</th>
+    <td><%= @user.is_trainer ? "Yes" : "No" %></td>
+  </tr>
+</table>
 
-<p>
-  <strong>Salt:</strong>
-  <%= @user.salt %>
-</p>
+<hr>
 
 <%= link_to 'Edit', edit_user_path(@user) %> |
 <%= link_to 'Back', users_path %>
