@@ -7,14 +7,7 @@ class SolutionsController < ApplicationController
     @solutions = Solution.all
   end
 
-  # GET /solutions/1
-  # GET /solutions/1.json
   def show
-    @solution = Solution.find(params[:solution_id])
-    @event = Event.find(params[:id])
-  end
-
-  def show_event_solutions
     @event = Event.find params[:id]
     @solutions = [Solution.find_by(event_id: params[:id])]
     #logger.info "--------> #{@solutions.inspect}"
@@ -25,13 +18,23 @@ class SolutionsController < ApplicationController
     end
   end
 
+  def show_solution
+    @event = Event.find(params[:id])
+    @solution = Solution.find params[:solution_id]
+
+    respond_to do |format|
+      format.html { render :show }
+      format.json { render :show, status: :created, location: @solution }
+    end
+  end
+
   # GET /solutions/new
   def new
     @event = Event.find params[:id]
 
     if Solution.where(event_id: @event.id).count > 0
       respond_to do |format|
-        flash[:error] = "Solution already exist for this event"
+        flash[:warning] = "Solution already exist for this event"
         format.html { render :index }
         format.json { render :edit, status: :created, location: @solution }
       end
@@ -41,12 +44,8 @@ class SolutionsController < ApplicationController
 
   end
 
-  # GET /solutions/1/edit
-  def edit
-  end
-
   # GET /answers/1/edit
-  def edit_event_solution
+  def edit
     @event = Event.find(params[:id])
     @solution = Solution.find(params[:solution_id])
 
@@ -66,7 +65,8 @@ class SolutionsController < ApplicationController
 
     respond_to do |format|
       if @solution.save
-        format.html { redirect_to "/events/#{event_id}/solutions", notice: 'Solution was successfully created.' }
+        flash[:success] = 'Solution was successfully created.'
+        format.html { redirect_to "/events/#{event_id}/solutions" }
         format.json { render :show, status: :created, location: @solution }
       else
         format.html { render :new }
@@ -77,7 +77,7 @@ class SolutionsController < ApplicationController
 
   # PATCH/PUT /solution/1
   # PATCH/PUT /solution/1.json
-  def update_event_solution
+  def update
     event_id = params[:id]
     solution_id = params[:solution_id]
 
@@ -93,7 +93,7 @@ class SolutionsController < ApplicationController
 
     @answers = Answer.where event_id: event_id || []
 
-    failed_answer = []
+    failed_answers = []
     sp = solution_params
     @answers.each do |answer|
       new_similarity = AnswersHelper::get_similarity(sp[:text], answer.text)
@@ -101,19 +101,20 @@ class SolutionsController < ApplicationController
 
       if !success
         logger.warn "Unable to update score for answer: #{answer.id}"
-        failed_answer << answer
+        failed_answers << answer
       else
         logger.info "New score for answer: #{answer.id} is #{new_similarity}"
       end
     end
 
-
     respond_to do |format|
       @solution.update! sp
-      if failed_answer.empty?
-        format.html { redirect_to event_solutions_path(event_id), notice: 'Solution was successfully updated.' }
+      if failed_answers.empty?
+        flash[:success] = 'Solution was successfully updated.'
+        format.html { redirect_to event_solutions_path(event_id) }
         format.json { render :show, status: :ok, location: @answer }
       else
+        flash[:warning] = "Solution was successfully updated, but failed to score #{failed_answers.size} answers"
         format.html { render :edit }
         format.json { render json: @answer.errors, status: :unprocessable_entity }
       end
@@ -121,26 +122,14 @@ class SolutionsController < ApplicationController
   end
 
 
-  # PATCH/PUT /solutions/1
-  # PATCH/PUT /solutions/1.json
-  def update
-    respond_to do |format|
-      if @solution.update(solution_params)
-        format.html { redirect_to @solution, notice: 'Solution was successfully updated.' }
-        format.json { render :show, status: :ok, location: @solution }
-      else
-        format.html { render :edit }
-        format.json { render json: @solution.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
   # DELETE /solutions/1
   # DELETE /solutions/1.json
   def destroy
+    event_id = params[:id]
     @solution.destroy
     respond_to do |format|
-      format.html { redirect_to solutions_url, notice: 'Solution was successfully destroyed.' }
+      flash[:success] = 'Solution was successfully destroyed.'
+      format.html { redirect_to event_solutions_path(event_id) }
       format.json { head :no_content }
     end
   end

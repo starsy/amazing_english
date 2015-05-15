@@ -7,19 +7,22 @@ class AnswersController < ApplicationController
     @answers = Answer.all
   end
 
-  # GET /answers/1
-  # GET /answers/1.json
   def show
-    @answer = Answer.find(params[:answer_id])
-    @event = Event.find(params[:id])
-  end
-
-  def show_event_answers
     @answers = Answer.where(event_id: params[:id]).order!(score: :desc) || []
     logger.info "--------> #{@answers.inspect}"
 
     respond_to do |format|
       format.html { render :index }
+      format.json { render :show, status: :created, location: @answer }
+    end
+  end
+
+  def show_answer
+    @answer = Answer.find(params[:answer_id])
+    @event = Event.find(params[:id])
+
+    respond_to do |format|
+      format.html { render :show }
       format.json { render :show, status: :created, location: @answer }
     end
   end
@@ -31,11 +34,6 @@ class AnswersController < ApplicationController
 
   # GET /answers/1/edit
   def edit
-    @answer = Answer.find(params[:id])
-  end
-
-  # GET /answers/1/edit
-  def edit_event_answer
     @event = Event.find(params[:id])
     @answer = Answer.find(params[:answer_id])
 
@@ -50,10 +48,6 @@ class AnswersController < ApplicationController
   def create
     @answer = Answer.new(answer_params)
     event_id = params[:event_id]
-
-
-
-
     @answer[:event_id] = event_id
     logger.info "Event_ID: #{event_id}"
 
@@ -61,7 +55,8 @@ class AnswersController < ApplicationController
 
     if solution.nil?
       respond_to do |format|
-          format.html { redirect_to "/events/#{event_id}/answers", error: 'Cannot find solution in this event' }
+          flash[:warning] = 'Cannot find solution in this event'
+          format.html { redirect_to "/events/#{event_id}/answers" }
           format.json { render :show, status: :created, location: @answer }
       end
     end
@@ -72,7 +67,8 @@ class AnswersController < ApplicationController
 
     respond_to do |format|
       if @answer.save
-        format.html { redirect_to "/events/#{event_id}/answers", notice: 'Answer was successfully created.' }
+        flash[:success] = 'Answer was successfully created.'
+        format.html { redirect_to "/events/#{event_id}/answers" }
         format.json { render :show, status: :created, location: @answer }
       else
         format.html { render :new }
@@ -84,20 +80,6 @@ class AnswersController < ApplicationController
   # PATCH/PUT /answers/1
   # PATCH/PUT /answers/1.json
   def update
-    respond_to do |format|
-      if @answer.update(answer_params)
-        format.html { redirect_to @answer, notice: 'Answer was successfully updated.' }
-        format.json { render :show, status: :ok, location: @answer }
-      else
-        format.html { render :edit }
-        format.json { render json: @answer.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  # PATCH/PUT /answers/1
-  # PATCH/PUT /answers/1.json
-  def update_event_answer
     event_id = params[:id]
     @answer = Answer.find(params[:answer_id])
 
@@ -106,7 +88,8 @@ class AnswersController < ApplicationController
 
     if solution.nil?
       respond_to do |format|
-        format.html { redirect_to event_answers_path(event_id), error: 'Cannot find solution in this event' }
+        flash[:warning] = 'Cannot find solution in this event'
+        format.html { redirect_to event_answers_path(event_id) }
         format.json { render :show, status: :created, location: @answer }
       end
     end
@@ -120,7 +103,8 @@ class AnswersController < ApplicationController
 
     respond_to do |format|
       if @answer.update!(ap)
-        format.html { redirect_to event_answers_path(event_id), notice: 'Answer was successfully updated.' }
+        flash[:success] = 'Answer was successfully updated.'
+        format.html { redirect_to event_answers_path(event_id) }
         format.json { render :show, status: :ok, location: @answer }
       else
         format.html { render :edit }
@@ -137,7 +121,8 @@ class AnswersController < ApplicationController
 
     @answer.destroy
     respond_to do |format|
-      format.html { redirect_to event_answers_path(event_id), notice: 'Answer was successfully destroyed.' }
+      flash[:success] = 'Answer was successfully destroyed.'
+      format.html { redirect_to event_answers_path(event_id) }
       format.json { head :no_content }
     end
   end
