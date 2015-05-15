@@ -1,7 +1,8 @@
-<%= bootstrap_form_for(user_sessions_path, method: :post) do |f| %>
-    <%= f.text_field 'email', :email%>
-    <%= f.password_field 'password', :password%>
-    <%= f.submit "Login" %>
+
+<%= bootstrap_form_tag layout: :inline, method: :post do |f| %>
+    <%= text_field_tag 'email', nil, class: 'form-control', placeholder: "Enter CEC ID"%>
+    <%= password_field_tag 'password', nil, class: 'form-control', placeholder: "Enter Password"%>
+    <%= submit_tag "Login", class: 'btn btn-default' %>
 <% end %>
 
 <hr>

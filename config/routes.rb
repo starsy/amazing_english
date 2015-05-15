@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   get 'login' => 'user_sessions#new', :as => :login
   post '/user_sessions/new' => 'user_sessions#create'
   post 'logout' => 'user_sessions#destroy', :as => :logout
+  get 'logout' => 'user_sessions#destroy'
 
   #root to: redirect('/events')
 
