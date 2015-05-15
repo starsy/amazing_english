@@ -1,5 +1,6 @@
 class AnswersController < ApplicationController
   before_action :set_answer, only: [:update]
+  skip_before_filter :require_login, only: [:new, :create]
 
   # GET /answers
   # GET /answers.json
@@ -8,7 +9,7 @@ class AnswersController < ApplicationController
   end
 
   def show
-    @answers = Answer.where(event_id: params[:id], is_active: true).order!(score: :desc) || []
+    @answers = Answer.where(event_id: params[:id]).order!(score: :desc) || []
 
     respond_to do |format|
       format.html { render :index }
@@ -71,6 +72,10 @@ class AnswersController < ApplicationController
     respond_to do |format|
       if @answer.save
         flash[:success] = 'Answer was successfully created.'
+        if !@current_user
+          format.html { redirect_to root_path }
+        end
+
         format.html { redirect_to "/events/#{event_id}/answers" }
         format.json { render :show, status: :created, location: @answer }
       else

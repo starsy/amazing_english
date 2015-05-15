@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
 
-  root to: 'users#index'
+  root to: redirect('/events')
 
   resources :users
   resources :user_sessions
@@ -10,7 +10,7 @@ Rails.application.routes.draw do
   post 'logout' => 'user_sessions#destroy', :as => :logout
   get 'logout' => 'user_sessions#destroy'
 
-  #root to: redirect('/events')
+
 
   resources :events do
     member do

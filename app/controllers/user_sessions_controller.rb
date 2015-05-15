@@ -1,4 +1,6 @@
 class UserSessionsController < ApplicationController
+  skip_before_filter :require_login, except: [:destroy]
+
   def new
     @user = User.new
   end
@@ -14,9 +16,10 @@ class UserSessionsController < ApplicationController
   end
 
   def destroy
+    @user = current_user
     logout
-    flash[:success] = "Goodbye!"
-    redirect_to(:users)
+    flash[:success] = "Goodbye #{@user.email}!"
+    redirect_to(:root)
   end
 
 

@@ -1,5 +1,6 @@
 class SolutionsController < ApplicationController
   before_action :set_solution, only: [:edit, :update, :destroy]
+  skip_before_filter :require_login, only: [:show]
 
   # GET /solutions
   # GET /solutions.json
