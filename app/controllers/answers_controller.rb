@@ -6,11 +6,13 @@ class AnswersController < ApplicationController
   # GET /answers.json
   def index
     @answers = Answer.all
+    authorize Answer.new
   end
 
   def show
     @event = Event.find(params[:id])
     @answers = Answer.where(event_id: params[:id]).order!(score: :desc) || []
+    authorize Answer.new
 
     respond_to do |format|
       format.html { render :index }
@@ -21,6 +23,7 @@ class AnswersController < ApplicationController
   def show_answer
     @answer = Answer.find(params[:answer_id])
     @event = Event.find(params[:id])
+    authorize @answer
 
     solution = @answer.event.solution
     @solution_text = (solution.text if solution) || ''
@@ -38,12 +41,14 @@ class AnswersController < ApplicationController
   # GET /answers/new
   def new
     @answer = Answer.new
+    authorize @answer
   end
 
   # GET /answers/1/edit
   def edit
     @event = Event.find(params[:id])
     @answer = Answer.find(params[:answer_id])
+    authorize @answer
 
     respond_to do |format|
       format.html { render :edit }
@@ -56,6 +61,8 @@ class AnswersController < ApplicationController
   def create
     event_id = params[:event_id]
     @answer = Answer.new(answer_params)
+    authorize @answer
+
     @answer[:event_id] = event_id
 
     trainee = @answer[:trainee]
@@ -77,7 +84,8 @@ class AnswersController < ApplicationController
           format.html { redirect_to root_path }
         end
 
-        format.html { redirect_to "/events/#{event_id}/answers" }
+        #format.html { redirect_to "/events/#{event_id}/answers/#{@answer.id}" }
+        format.html { redirect_to "/events" }
         format.json { render :show, status: :created, location: @answer }
       else
         format.html { render :new }
@@ -91,7 +99,7 @@ class AnswersController < ApplicationController
   def update
     event_id = params[:id]
     @answer = Answer.find(params[:answer_id])
-
+    authorize @answer
 
     solution = Solution.find_by event_id: event_id
     solution_text = solution ? solution.text : nil
@@ -120,6 +128,7 @@ class AnswersController < ApplicationController
   def destroy
     event_id = params[:id]
     @answer = Answer.find(params[:answer_id])
+    authorize @answer
 
     @answer.destroy
     respond_to do |format|

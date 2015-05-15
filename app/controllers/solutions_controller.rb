@@ -32,7 +32,7 @@ class SolutionsController < ApplicationController
   # GET /solutions/new
   def new
     @event = Event.find params[:id]
-    authorize @event
+    authorize Solution.new
 
     if Solution.where(event_id: @event.id).count > 0
       respond_to do |format|

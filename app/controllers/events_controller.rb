@@ -16,6 +16,7 @@ class EventsController < ApplicationController
   # GET /events/new
   def new
     @event = Event.new
+    authorize @event
   end
 
   # GET /events/1/edit
@@ -26,6 +27,7 @@ class EventsController < ApplicationController
   # POST /events.json
   def create
     @event = Event.new(event_params)
+    authorize @event
 
     respond_to do |format|
       if @event.save
@@ -42,6 +44,7 @@ class EventsController < ApplicationController
   # PATCH/PUT /events/1
   # PATCH/PUT /events/1.json
   def update
+    authorize @event
     respond_to do |format|
       if @event.update(event_params)
         flash[:success] = "Event '#{@event.title}' was successfully updated."
@@ -57,6 +60,7 @@ class EventsController < ApplicationController
   # DELETE /events/1
   # DELETE /events/1.json
   def destroy
+    authorize @event
     @event.destroy
     respond_to do |format|
       flash[:success] = 'Event was successfully destroyed.'

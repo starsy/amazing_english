@@ -23,5 +23,8 @@
 </div>
 <hr>
 
+<%= link_to 'New', "/events/#{@event.id}/answers/new" %> |
+<% if false %>
 <%= link_to 'Edit', "/events/#{@event.id}/answers/#{@answer.id}/edit" %> |
+<% end %>
 <%= link_to 'Back', "/events/#{@event.id}/answers" %>

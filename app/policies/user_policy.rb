@@ -4,7 +4,9 @@ class UserPolicy < ApplicationPolicy
   end
 
   def update?
-    user && record && user.id == record.id && user.is_admin == record.is_admin && user.is_trainer == record.is_trainer
+    return false if user.nil?
+    return true if user.is_admin
+    return record && user.id == record.id && user.is_trainer == record.is_trainer
   end
 
 end
