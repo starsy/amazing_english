@@ -2,6 +2,8 @@ Rails.application.routes.draw do
   #resources :answers
   #resources :solutions
 
+  root to: redirect('/events')
+
   resources :events do
     member do
       get 'answers' => 'answers#show_event_answers'

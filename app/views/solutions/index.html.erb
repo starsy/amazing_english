@@ -1,6 +1,15 @@
 <p id="notice"><%= notice %></p>
 
-<h1>Listing Solutions</h1>
+
+<h1>Listing Solutions
+  <%= link_to new_event_solutions_path(params[:id]) do %>
+    <span class="glyphicon glyphicon-plus small"></span>
+  <% end %>
+
+  <%= link_to "/events" do %>
+    <span class="glyphicon glyphicon-backward small"></span>
+  <% end %>
+</h1>
 
 <table class="table table-hover">
   <thead>
@@ -17,9 +26,19 @@
         <tr>
           <td><%= solution.text %></td>
           <td><%= solution.provider %></td>
-          <td><%= link_to 'Show', "/events/#{@event.id}/solutions/#{solution.id}" %></td>
-          <td><%= link_to 'Edit', "/events/#{@event.id}/solutions/#{solution.id}/edit" %></td>
-          <td><%= link_to 'Destroy', "/events/#{@event.id}/solutions/#{solution.id}", method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          <td>
+            <%= link_to "/events/#{@event.id}/solutions/#{solution.id}" do %>
+              <span class="glyphicon glyphicon-zoom-in"></span>
+            <% end %>
+          </td>
+          <td><%= link_to  "/events/#{@event.id}/solutions/#{solution.id}/edit" do %>
+              <span class="glyphicon glyphicon-pencil"></span>
+          <% end %>
+          </td>
+          <td><%= link_to "/events/#{@event.id}/solutions/#{solution.id}", method: :delete, data: { confirm: 'Are you sure?' } do%>
+              <span class="glyphicon glyphicon-remove text-danger"></span>
+            <% end %>
+              </td>
         </tr>
       <% end %>
     <% end %>
@@ -27,5 +46,3 @@
 </table>
 
 <br>
-
-<%= link_to 'New Solution', new_event_solutions_path(params[:id]) %>

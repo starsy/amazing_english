@@ -23,12 +23,6 @@
 </div>
 <hr>
 
-<strong class="">Solution Text:</strong>
-<div class="">
-  <%= solution_text %>
-</div>
-<hr>
-
 <strong>Diff:</strong>
 <div class="">
   <%= Diffy::Diff.new(answer_text, solution_text).to_s(:html).html_safe %>

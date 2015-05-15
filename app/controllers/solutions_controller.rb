@@ -27,8 +27,18 @@ class SolutionsController < ApplicationController
 
   # GET /solutions/new
   def new
-    @solution = Solution.new
     @event = Event.find params[:id]
+
+    if Solution.where(event_id: @event.id).count > 0
+      respond_to do |format|
+        flash[:error] = "Solution already exist for this event"
+        format.html { render :index }
+        format.json { render :edit, status: :created, location: @solution }
+      end
+    end
+
+    @solution = Solution.new
+
   end
 
   # GET /solutions/1/edit
