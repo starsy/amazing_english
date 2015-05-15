@@ -40,11 +40,17 @@
           <% end %>
           <span class="badge"><%= Solution.where(event_id: event.id).count %></span>
           |
-          <%= link_to event_answers_path(event) do %>
+          <%if event.is_solution_published || (current_user && current_user.is_trainer) %>
+            <%= link_to event_answers_path(event) do %>
+              <span class="glyphicon glyphicon-inbox"></span>
+              Check Homework
+            <% end %>
+          <% else %>
             <span class="glyphicon glyphicon-inbox"></span>
             Check Homework
           <% end %>
           <span class="badge"><%= Answer.where(event_id: event.id).count %></span>
+
           |
           <%if event.is_closed %>
             <span class="glyphicon glyphicon-open-file"></span>
@@ -69,4 +75,4 @@
 
 <hr>
 
-<%= link_to 'Manage Users', users_path %>
+<%= link_to '<< Manage Users', users_path %>
