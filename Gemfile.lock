@@ -165,6 +165,7 @@ DEPENDENCIES
   jquery-rails
   matrix
   mysql2
+  narray
   rails (= 4.2.1)
   rb-gsl
   sass-rails (~> 5.0)

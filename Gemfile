@@ -3,6 +3,7 @@ source 'https://ruby.taobao.org'
 
 gem 'matrix'
 gem 'rb-gsl'
+gem 'narray'
 gem 'tf-idf-similarity'
 gem 'diffy'
 

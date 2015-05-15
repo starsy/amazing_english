@@ -15,6 +15,13 @@
     <%= f.text_field :title %>
     <%= f.text_field :trainer %>
     <%= f.date_select :date %>
+    <%= f.check_box :is_solution_published do %>
+    Publish Solution?
+    <% end %>
+    <%= f.check_box :is_closed do %>
+    Closed?
+    <% end %>
+
     <%= f.submit class: "btn btn-success" %>
 
 <% end %>

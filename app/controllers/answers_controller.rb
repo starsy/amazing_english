@@ -8,8 +8,7 @@ class AnswersController < ApplicationController
   end
 
   def show
-    @answers = Answer.where(event_id: params[:id]).order!(score: :desc) || []
-    logger.info "--------> #{@answers.inspect}"
+    @answers = Answer.where(event_id: params[:id], is_active: true).order!(score: :desc) || []
 
     respond_to do |format|
       format.html { render :index }
@@ -46,22 +45,19 @@ class AnswersController < ApplicationController
   # POST /answers
   # POST /answers.json
   def create
-    @answer = Answer.new(answer_params)
     event_id = params[:event_id]
+    @answer = Answer.new(answer_params)
     @answer[:event_id] = event_id
-    logger.info "Event_ID: #{event_id}"
+
+    trainee = @answer[:trainee]
 
     solution = Solution.find_by event_id: event_id
+    solution_text = solution ? solution.text : 'zzzz'
+    logger.info "------> solution: #{solution_text.inspect}"
+    logger.info "------> answer: #{@answer.text.inspect}"
 
-    if solution.nil?
-      respond_to do |format|
-          flash[:warning] = 'Cannot find solution in this event'
-          format.html { redirect_to "/events/#{event_id}/answers" }
-          format.json { render :show, status: :created, location: @answer }
-      end
-    end
+    similarity = AnswersHelper::get_similarity(solution_text, @answer.text)
 
-    similarity = AnswersHelper::get_similarity(solution.text, @answer.text)
     @answer.score = similarity
     logger.info "-----> Similarity Score: #{similarity}"
 
@@ -83,19 +79,12 @@ class AnswersController < ApplicationController
     event_id = params[:id]
     @answer = Answer.find(params[:answer_id])
 
-    solution = Solution.find_by_event_id event_id
-    logger.info "========> event_id: #{event_id}"
 
-    if solution.nil?
-      respond_to do |format|
-        flash[:warning] = 'Cannot find solution in this event'
-        format.html { redirect_to event_answers_path(event_id) }
-        format.json { render :show, status: :created, location: @answer }
-      end
-    end
+    solution = Solution.find_by event_id: event_id
+    solution_text = solution ? solution.text : nil
 
     ap = answer_params
-    similarity = AnswersHelper::get_similarity(solution.text, ap[:text])
+    similarity = AnswersHelper::get_similarity(solution_text, ap[:text])
     ap[:score] = similarity
     @answer.score = similarity
 
@@ -135,6 +124,6 @@ class AnswersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def answer_params
-      params.require(:answer).permit(:text, :trainee, :score)
+      params.require(:answer).permit(:text, :trainee)
     end
 end

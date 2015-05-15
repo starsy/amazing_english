@@ -18,6 +18,22 @@
   <%= @event.date %>
     </td>
   </tr>
+
+  <tr>
+    <th>Solution Published?</th>
+    <td>
+      <%= check_box_tag(nil, nil, @event.is_solution_published, disabled: "true", class: "checkbox") %>
+    </td>
+  </tr>
+
+  <tr>
+    <th>Closed?</th>
+    <td>
+      <%= check_box_tag(nil, nil, @event.is_closed, disabled: "true", class: "checkbox") %>
+    </td>
+  </tr>
+
+
 </table>
 
 <hr>

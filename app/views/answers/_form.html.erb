@@ -15,10 +15,10 @@ url = "/events/#{params[:id]}/answers/#{params[:answer_id]}"
     </div>
   <% end %>
 
-    <%= f.label :event_id %>: <%= params[:id] %><br>
+    <%= f.label :event_id %>: <%= params[:id] %> <br>
     <%= f.text_area :text, size: "10x15"%>
     <%= f.text_field :trainee %>
-    <%= f.text_field :score %>
+    <%# f.text_field :score %>
     <%= f.submit class: "btn btn-success"%>
 <% end %>
 

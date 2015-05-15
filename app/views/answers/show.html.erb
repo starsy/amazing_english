@@ -1,8 +1,12 @@
 <p id="notice"><%= notice %></p>
 
 <%
-   solution_text = @answer.event.solution.text.delete("\n").delete("\r")
-   answer_text = @answer.text.delete("\n").delete("\r")
+   solution = @answer.event.solution
+   solution_text = (solution.text if solution) || ''
+   solution_text = solution_text.delete("\n").delete("\r")
+
+   answer_text = @answer.text || ''
+   answer_text = answer_text.delete("\n").delete("\r")
 %>
 
 <strong>Trainee:</strong>
@@ -18,7 +22,7 @@
 <hr>
 
 <strong>Answer Text:</strong>
-<div class="y">
+<div class="">
   <%= answer_text %>
 </div>
 <hr>

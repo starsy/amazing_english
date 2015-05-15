@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150513081106) do
+ActiveRecord::Schema.define(version: 20150515102405) do
 
   create_table "answers", force: :cascade do |t|
     t.text     "text",       limit: 65535
@@ -20,16 +20,19 @@ ActiveRecord::Schema.define(version: 20150513081106) do
     t.datetime "created_at",               null: false
     t.datetime "updated_at",               null: false
     t.integer  "event_id",   limit: 4
+    t.boolean  "is_active",  limit: 1
   end
 
   add_index "answers", ["event_id"], name: "index_answers_on_event_id", using: :btree
 
   create_table "events", force: :cascade do |t|
-    t.text     "title",      limit: 65535
+    t.text     "title",                 limit: 65535
     t.date     "date"
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
-    t.string   "trainer",    limit: 255
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
+    t.string   "trainer",               limit: 255
+    t.boolean  "is_solution_published", limit: 1
+    t.boolean  "is_closed",             limit: 1
   end
 
   add_index "events", ["id"], name: "index_events_on_id", unique: true, using: :btree
