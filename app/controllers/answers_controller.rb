@@ -20,6 +20,13 @@ class AnswersController < ApplicationController
     @answer = Answer.find(params[:answer_id])
     @event = Event.find(params[:id])
 
+    solution = @answer.event.solution
+    @solution_text = (solution.text if solution) || ''
+    @solution_text = @solution_text.delete("\n").delete("\r")
+
+    @answer_text = @answer.text || ''
+    @answer_text = @answer_text.delete("\n").delete("\r")
+
     respond_to do |format|
       format.html { render :show }
       format.json { render :show, status: :created, location: @answer }

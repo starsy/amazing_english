@@ -1,0 +1,7 @@
+<%= bootstrap_form_for(user_sessions_path, method: :post) do |f| %>
+    <%= f.text_field 'email', :email%>
+    <%= f.password_field 'password', :password%>
+    <%= f.submit "Login" %>
+<% end %>
+
+<hr>

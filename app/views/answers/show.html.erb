@@ -1,13 +1,3 @@
-<p id="notice"><%= notice %></p>
-
-<%
-   solution = @answer.event.solution
-   solution_text = (solution.text if solution) || ''
-   solution_text = solution_text.delete("\n").delete("\r")
-
-   answer_text = @answer.text || ''
-   answer_text = answer_text.delete("\n").delete("\r")
-%>
 
 <strong>Trainee:</strong>
 <div class="">
@@ -23,13 +13,13 @@
 
 <strong>Answer Text:</strong>
 <div class="">
-  <%= answer_text %>
+  <%= @answer_text %>
 </div>
 <hr>
 
 <strong>Diff:</strong>
 <div class="">
-  <%= Diffy::Diff.new(answer_text, solution_text).to_s(:html).html_safe %>
+  <%= Diffy::Diff.new(@answer_text, @solution_text).to_s(:html).html_safe %>
 </div>
 <hr>
 

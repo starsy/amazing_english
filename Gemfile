@@ -3,13 +3,13 @@ source 'https://ruby.taobao.org'
 
 gem 'matrix'
 gem 'rb-gsl'
-gem 'narray'
 gem 'tf-idf-similarity'
 gem 'diffy'
 
 gem 'bootstrap-sass'
 gem 'bootstrap_form'
 gem 'autoprefixer-rails'
+gem 'sorcery'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.1'

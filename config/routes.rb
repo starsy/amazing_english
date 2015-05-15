@@ -1,8 +1,15 @@
 Rails.application.routes.draw do
-  #resources :answers
-  #resources :solutions
 
-  root to: redirect('/events')
+  root to: 'users#index'
+
+  resources :users
+  resources :user_sessions
+
+  get 'login' => 'user_sessions#new', :as => :login
+  post '/user_sessions/new' => 'user_sessions#create'
+  post 'logout' => 'user_sessions#destroy', :as => :logout
+
+  #root to: redirect('/events')
 
   resources :events do
     member do
