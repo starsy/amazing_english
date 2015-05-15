@@ -1,1 +1,1 @@
-json.extract! @solution, :id, :text, :provider, :created_at, :updated_at
+json.extract! @solution, :id, :text, :provider, :created_at, :updated_at if @solution

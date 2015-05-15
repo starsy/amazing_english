@@ -9,11 +9,12 @@ class AnswersController < ApplicationController
   end
 
   def show
+    @event = Event.find(params[:id])
     @answers = Answer.where(event_id: params[:id]).order!(score: :desc) || []
 
     respond_to do |format|
       format.html { render :index }
-      format.json { render :show, status: :created, location: @answer }
+      format.json { render :index, status: :created, location: event_answers_path(@event) }
     end
   end
 
@@ -30,7 +31,7 @@ class AnswersController < ApplicationController
 
     respond_to do |format|
       format.html { render :show }
-      format.json { render :show, status: :created, location: @answer }
+      format.json { render :show, status: :created, location: event_answers_path(@event) }
     end
   end
 

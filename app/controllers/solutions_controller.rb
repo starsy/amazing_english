@@ -15,7 +15,7 @@ class SolutionsController < ApplicationController
 
     respond_to do |format|
       format.html { render :index }
-      format.json { render :show, status: :created, location: @solution }
+      format.json { render :index, status: :created, location: @solution }
     end
   end
 
