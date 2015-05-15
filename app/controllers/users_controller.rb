@@ -26,11 +26,12 @@ class UsersController < ApplicationController
   # POST /users.json
   def create
     @user = User.new(user_params)
+    authorize @user
 
     respond_to do |format|
       if @user.save
         flash[:success] = "User #{@user.email} was successfully created."
-        format.html { redirect_to :root }
+        format.html { redirect_to :index }
         format.json { render :show, status: :created, location: @user }
       else
         flash[:warning] = 'Unable to create new user.'
@@ -45,6 +46,7 @@ class UsersController < ApplicationController
   def update
     respond_to do |format|
       p = user_params
+      authorize @user
 
       if @user.update(p)
         flash[:success] = 'User was successfully updated.'

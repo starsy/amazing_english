@@ -32,6 +32,7 @@ class SolutionsController < ApplicationController
   # GET /solutions/new
   def new
     @event = Event.find params[:id]
+    authorize @event
 
     if Solution.where(event_id: @event.id).count > 0
       respond_to do |format|
@@ -49,6 +50,7 @@ class SolutionsController < ApplicationController
   def edit
     @event = Event.find(params[:id])
     @solution = Solution.find(params[:solution_id])
+    authorize @solution
 
     respond_to do |format|
       format.html { render :edit }
@@ -63,6 +65,8 @@ class SolutionsController < ApplicationController
     event_id = params[:event_id]
     @solution[:event_id] = event_id
     logger.info "Event_ID: #{event_id}"
+
+    authorize @solution
 
     respond_to do |format|
       if @solution.save
@@ -84,6 +88,8 @@ class SolutionsController < ApplicationController
 
     @solution = Solution.find_by id: solution_id
     @event = Event.find(event_id)
+
+    authorize @solution
 
     if @solution.nil?
       respond_to do |format|
@@ -127,6 +133,8 @@ class SolutionsController < ApplicationController
   # DELETE /solutions/1.json
   def destroy
     event_id = params[:id]
+    authorize @solution
+
     @solution.destroy
     respond_to do |format|
       flash[:success] = 'Solution was successfully destroyed.'
