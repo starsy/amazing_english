@@ -4,15 +4,20 @@ class AnswersController < ApplicationController
 
   # GET /answers
   # GET /answers.json
-  def index
-    @answers = Answer.all
-    authorize Answer.new
-  end
+  #def index
+  #  @answers = Answer.all
+  #  authorize Answer.new
+  #end
 
   def show
     @event = Event.find(params[:id])
     @answers = Answer.where(event_id: params[:id]).order!(score: :desc) || []
-    authorize Answer.new
+
+    if @event.is_solution_published
+      skip_authorization
+    else
+      authorize Answer.new
+    end
 
     respond_to do |format|
       format.html { render :index }
@@ -23,7 +28,12 @@ class AnswersController < ApplicationController
   def show_answer
     @answer = Answer.find(params[:answer_id])
     @event = Event.find(params[:id])
-    authorize @answer
+
+    if @event.is_solution_published
+      skip_authorization
+    else
+      authorize Answer.new
+    end
 
     solution = @answer.event.solution
     @solution_text = (solution.text if solution) || ''

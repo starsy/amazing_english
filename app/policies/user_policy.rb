@@ -1,4 +1,13 @@
 class UserPolicy < ApplicationPolicy
+
+  def index?
+    true
+  end
+
+  def new?
+    user && user.is_admin
+  end
+
   def create?
     user && user.is_admin
   end

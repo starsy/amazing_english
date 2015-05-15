@@ -6,6 +6,7 @@ class UsersController < ApplicationController
   # GET /users.json
   def index
     @users = User.all
+    authorize User.new
   end
 
   # GET /users/1
@@ -16,6 +17,7 @@ class UsersController < ApplicationController
   # GET /users/new
   def new
     @user = User.new
+    authorize @user
   end
 
   # GET /users/1/edit

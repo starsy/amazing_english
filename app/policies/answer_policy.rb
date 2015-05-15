@@ -15,10 +15,6 @@ class AnswerPolicy < ApplicationPolicy
     user && user.is_trainer
   end
 
-  def index?
-    true
-  end
-
   def show_answer?
     user && user.is_trainer
   end
