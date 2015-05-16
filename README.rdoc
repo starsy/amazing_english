@@ -1,15 +1,23 @@
 == README
 
+This is the management application based on RoR for Amazing English Program, which is to help imporve individual's English listening skills.
+
 This README would normally document whatever steps are necessary to get the
 application up and running.
 
 Things you may want to cover:
 
-* Ruby version
+* Ruby version: 2.0.0-p645
 
-* System dependencies
+* System dependencies:
+** Mysql or any other relational database
+** Rails 4.2 -> MVC
+** Bootstrap -> Layout and style
+** sorcery -> Authentication
+** pundit -> Authorization
+** tf-idf-similarity -> Text similarity
 
-* Configuration
+* Configuration:
 
 * Database creation
 
