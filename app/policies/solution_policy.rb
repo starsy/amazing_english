@@ -3,6 +3,10 @@ class SolutionPolicy < ApplicationPolicy
     true
   end
 
+  def index?
+    true
+  end
+
   def edit?
     user && user.is_trainer
   end

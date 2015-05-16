@@ -1,6 +1,6 @@
 class AnswersController < ApplicationController
   before_action :set_answer, only: [:update]
-  skip_before_filter :require_login, only: [:new, :create]
+  skip_before_filter :require_login, only: [:new, :create, :show, :index]
 
   # GET /answers
   # GET /answers.json
@@ -9,7 +9,7 @@ class AnswersController < ApplicationController
   #  authorize Answer.new
   #end
 
-  def show
+  def index
     @event = Event.find(params[:id])
     @answers = Answer.where(event_id: params[:id]).order!(score: :desc) || []
 
@@ -25,7 +25,7 @@ class AnswersController < ApplicationController
     end
   end
 
-  def show_answer
+  def show
     @answer = Answer.find(params[:answer_id])
     @event = Event.find(params[:id])
 

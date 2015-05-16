@@ -12,7 +12,7 @@ end
     <%= f.text_field :email, email_option %>
     <%= f.password_field :password, placeholder: ph_text %>
     <%= f.password_field :password_confirmation, placeholder: ph_text + " Again" %>
-    <% if @user.is_admin %>
+    <% if @user.is_admin || current_user.is_admin %>
       <%= f.check_box :is_admin do %>Is Admin?<% end %>
       <%= f.check_box :is_trainer do %>Is Trainer?<% end %>
     <% end %>

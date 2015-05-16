@@ -18,7 +18,7 @@
     <tr>
       <th>Text</th>
       <th>Provider</th>
-      <th colspan="3" class="text-center">Actions</th>
+      <th class="text-center">Actions</th>
     </tr>
   </thead>
 
@@ -34,22 +34,23 @@
             <% end %>
           </td>
           <td><%= solution.provider %></td>
-          <td><%= link_to  "/events/#{@event.id}/solutions/#{solution.id}/edit" do %>
-              <span class="glyphicon glyphicon-pencil"></span>
-          <% end %>
-          </td>
-          <td><%= link_to "/events/#{@event.id}/solutions/#{solution.id}", method: :delete, data: { confirm: 'Are you sure?' } do%>
-            <span class="glyphicon glyphicon-remove text-danger" title="Delete"></span>
+          <td class="text-center">
+            <% if policy(solution).update? %>
+              <%= link_to  "/events/#{@event.id}/solutions/#{solution.id}/edit" do %>
+                <span class="glyphicon glyphicon-pencil"></span>
+              <% end %> |
+              <%= link_to "/events/#{@event.id}/solutions/#{solution.id}", method: :delete, data: { confirm: 'Are you sure?' } do%>
+                <span class="glyphicon glyphicon-remove text-danger" title="Delete"></span>
+              <% end %>
             <% end %>
-              </td>
+          </td>
         </tr>
       <% else %>
         <tr>
           <td>
-            <div class="text-muted bg-warning text-capitalize text-warning">Solution not ready yet.</div>
+            <span class="text-muted bg-warning text-capitalize text-warning">Solution not ready yet.</span>
           </td>
-          <td><div class="text-capitalize small">Guess who will be here...</div></td>
-          <td></td>
+          <td><span class="text-capitalize small">Guess who will be here...</span></td>
           <td></td>
         </tr>
       <% end %>

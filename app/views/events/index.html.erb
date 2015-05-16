@@ -1,6 +1,4 @@
-<p id="notice"><%= notice %></p>
-
-<h1>Listing Events
+<h1>Learning Events
   <%= link_to new_event_path do %>
     <span class="glyphicon glyphicon-plus small"></span>
   <% end %>
@@ -8,68 +6,71 @@
 
 <table class="table table-hover">
   <thead>
-    <tr>
-      <th>Title</th>
-      <th>Trainer</th>
-      <th>Date</th>
-      <th>Solution Published?</th>
-      <th>Closed?</th>
-      <th class="text-right">Action</th>
-    </tr>
+  <tr>
+    <th>Title</th>
+    <th>Trainer</th>
+    <th>Date</th>
+    <th>Solution Published?</th>
+    <th>Closed?</th>
+    <th class="text-center">Action</th>
+  </tr>
   </thead>
 
   <tbody>
-    <% @events.each do |event| %>
-      <tr>
-        <td><%= event.title %></td>
-        <td><%= event.trainer %></td>
-        <td><%= event.date %></td>
-        <td><%= event.is_solution_published ? "Yes" : "No" %></td>
-        <td><%= event.is_closed ? "Yes" : "No" %></td>
-        <td class="text-right"><%= link_to event do %>
+  <% @events.each do |event| %>
+    <tr>
+      <td><%= event.title %></td>
+      <td><%= event.trainer %></td>
+      <td><%= event.date %></td>
+      <td><%= event.is_solution_published ? "Yes" : "No" %></td>
+      <td><%= event.is_closed ? "Yes" : "No" %></td>
+
+
+      <td class="text-right">
+        <% if policy(event).update? %>
+          <%= link_to event do %>
             <span class="glyphicon glyphicon-zoom-in"></span>
           <% end %> |
-
-        <%= link_to edit_event_path(event) do %>
+          <%= link_to edit_event_path(event) do %>
             <span class="glyphicon glyphicon-pencil"></span>
           <% end %> |
+        <% end %>
 
-          <%= link_to event_solutions_path(event) do %>
-            <span class="glyphicon glyphicon-file" title="Manage Solution"></span>
-            Solution
-          <% end %>
-          <span class="badge"><%= Solution.where(event_id: event.id).count %></span>
-          |
-          <%if event.is_solution_published || (current_user && current_user.is_trainer) %>
-            <%= link_to event_answers_path(event) do %>
-              <span class="glyphicon glyphicon-inbox"></span>
-              Check Homework
-            <% end %>
-          <% else %>
+        <%= link_to event_solutions_path(event) do %>
+          <span class="glyphicon glyphicon-file" title="Manage Solution"></span>
+          Solution
+        <% end %>
+        <span class="badge"><%= Solution.where(event_id: event.id).count %></span>
+        |
+        <% if event.is_solution_published || (current_user && current_user.is_trainer) %>
+          <%= link_to event_answers_path(event) do %>
             <span class="glyphicon glyphicon-inbox"></span>
             Check Homework
           <% end %>
-          <span class="badge"><%= Answer.where(event_id: event.id).count %></span>
-
-          |
-          <%if event.is_closed %>
+        <% else %>
+          <span class="glyphicon glyphicon-inbox text-muted"></span>
+          <span class="text-muted">Check Homework</span>
+        <% end %>
+        <span class="badge"><%= Answer.where(event_id: event.id).count %></span>
+        |
+        <% if event.is_closed %>
+          <span class="glyphicon glyphicon-open-file text-muted"></span>
+          <span class="text-muted">Submit Homework</span>
+        <% else %>
+          <%= link_to new_event_answers_path(event) do %>
             <span class="glyphicon glyphicon-open-file"></span>
             Submit Homework
-          <% else %>
-            <%= link_to new_event_answers_path(event) do %>
-              <span class="glyphicon glyphicon-open-file"></span>
-              Submit Homework
-            <% end %>
           <% end %>
+        <% end %>
 
-          <% if false %>
-          <%= link_to event, method: :delete, data: { confirm: 'Are you sure?' } do %>
-              <span class="glyphicon glyphicon-remove text-danger"></span>
-            <% end %>
-          </td>
+        <% if false %>
+          <%= link_to event, method: :delete, data: {confirm: 'Are you sure?'} do %>
+            <span class="glyphicon glyphicon-remove text-danger"></span>
           <% end %>
-      </tr>
-    <% end %>
+          </td>
+        <% end %>
+        </tr>
+  <% end %>
   </tbody>
 </table>
 

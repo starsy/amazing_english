@@ -1,14 +1,8 @@
 class SolutionsController < ApplicationController
   before_action :set_solution, only: [:edit, :update, :destroy]
-  skip_before_filter :require_login, only: [:show]
+  skip_before_filter :require_login, only: [:index]
 
-  # GET /solutions
-  # GET /solutions.json
   def index
-    @solutions = Solution.all
-  end
-
-  def show
     @event = Event.find params[:id]
     @solutions = [Solution.find_by(event_id: params[:id])]
     #logger.info "--------> #{@solutions.inspect}"
@@ -19,7 +13,7 @@ class SolutionsController < ApplicationController
     end
   end
 
-  def show_solution
+  def show
     @event = Event.find(params[:id])
     @solution = Solution.find params[:solution_id]
 

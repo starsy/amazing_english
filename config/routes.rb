@@ -14,16 +14,16 @@ Rails.application.routes.draw do
 
   resources :events do
     member do
-      get 'answers' => 'answers#show'
+      get 'answers' => 'answers#index'
       get 'answers/new' => 'answers#new'
-      get 'answers/:answer_id' => 'answers#show_answer'
+      get 'answers/:answer_id' => 'answers#show'
       get 'answers/:answer_id/edit' => 'answers#edit'
       patch 'answers/:answer_id' => 'answers#update'
       delete 'answers/:answer_id' => 'answers#destroy'
 
-      get 'solutions' => 'solutions#show'
+      get 'solutions' => 'solutions#index'
       get 'solutions/new' => 'solutions#new'
-      get 'solutions/:solution_id' => 'solutions#show_solution'
+      get 'solutions/:solution_id' => 'solutions#show'
       get 'solutions/:solution_id/edit' => 'solutions#edit'
       patch 'solutions/:solution_id' => 'solutions#update'
       delete 'solutions/:solution_id' => 'solutions#destroy'

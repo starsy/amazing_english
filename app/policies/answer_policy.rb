@@ -15,11 +15,11 @@ class AnswerPolicy < ApplicationPolicy
     user && user.is_trainer
   end
 
-  def show_answer?
+  def show?
     user && user.is_trainer
   end
 
-  def show?
+  def index?
     user && user.is_trainer
   end
 

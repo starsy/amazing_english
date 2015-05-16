@@ -33,7 +33,7 @@ class UsersController < ApplicationController
     respond_to do |format|
       if @user.save
         flash[:success] = "User #{@user.email} was successfully created."
-        format.html { redirect_to :index }
+        format.html { redirect_to users_path }
         format.json { render :show, status: :created, location: @user }
       else
         flash[:warning] = 'Unable to create new user.'

@@ -27,18 +27,23 @@
           <td><%= answer.trainee %></td>
           <td><%= answer.is_active ? "Yes" : "No" %></td>
           <td><span class="badge large"><%= (answer.score * 100).round %></span></td>
-          <td><%= link_to  "/events/#{params[:id]}/answers/#{answer.id}" do %>
+          <td>
+            <%= link_to  "/events/#{params[:id]}/answers/#{answer.id}" do %>
               <span class="glyphicon glyphicon-zoom-in"></span>
-              <% end %>
-              </td>
-          <td><%= link_to "/events/#{params[:id]}/answers/#{answer.id}/edit" do %>
+            <% end %>
+          </td>
+          <% if policy(answer).update? %>
+          <td>
+            <%= link_to "/events/#{params[:id]}/answers/#{answer.id}/edit" do %>
               <span class="glyphicon glyphicon-pencil"></span>
             <% end %>
-              </td>
-          <td><%= link_to "/events/#{params[:id]}/answers/#{answer.id}", method: :delete, data: { confirm: 'Are you sure?' } do %>
+          </td>
+          <td>
+            <%= link_to "/events/#{params[:id]}/answers/#{answer.id}", method: :delete, data: { confirm: 'Are you sure?' } do %>
               <span class="glyphicon glyphicon-remove text-danger"></span>
             <% end %>
           </td>
+          <% end %>
         </tr>
       <% end %>
     <% end %>
