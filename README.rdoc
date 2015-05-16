@@ -1,6 +1,6 @@
 == README
 
-This is the management application based on Ruby on Rails for *Amazing English Program*, which is to help imporve individual's English listening skills and track the improvement and progress.
+This is the management application based on Ruby on Rails for <b>Amazing English Program</b>, which is to help imporve individual's English listening skills and track the improvement and progress.
 
 * Ruby version:
   * 2.0.0-p645
