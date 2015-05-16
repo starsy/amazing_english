@@ -8,22 +8,15 @@ application up and running.
 Things you may want to cover:
 
 * Ruby version: 
-
-  2.0.0-p645
+  * 2.0.0-p645
 
 * System dependencies:
-  
-  Mysql or any other relational database
-  
-  Rails 4.2 -> MVC
-  
-  Bootstrap -> Layout and style
-  
-  sorcery -> Authentication
-  
-  pundit -> Authorization
-  
-  tf-idf-similarity -> Text similarity
+  * Mysql or any other relational database
+  * Rails 4.2 -> MVC
+  * Bootstrap -> Layout and style
+  * sorcery -> Authentication
+  * pundit -> Authorization
+  * tf-idf-similarity -> Text similarity
 
 * Configuration:
 
