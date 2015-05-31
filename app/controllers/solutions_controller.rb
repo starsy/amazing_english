@@ -5,7 +5,6 @@ class SolutionsController < ApplicationController
   def index
     @event = Event.find params[:id]
     @solutions = [Solution.find_by(event_id: params[:id])]
-    #logger.info "--------> #{@solutions.inspect}"
 
     respond_to do |format|
       format.html { render :index }
@@ -31,7 +30,7 @@ class SolutionsController < ApplicationController
     if Solution.where(event_id: @event.id).count > 0
       respond_to do |format|
         flash[:warning] = "Solution already exist for this event"
-        format.html { render :index }
+        format.html { redirect_to "/events/#{@event.id}/solutions" }
         format.json { render :edit, status: :created, location: @solution }
       end
     end
@@ -62,16 +61,24 @@ class SolutionsController < ApplicationController
 
     authorize @solution
 
-    respond_to do |format|
-      if @solution.save
-        flash[:success] = 'Solution was successfully created.'
-        failed_answers = score(event_id, @solution.text)
+    if Solution.where(event_id: event_id).count > 0
+      respond_to do |format|
+        flash[:warning] = "Solution already exist for this event"
+        format.html { redirect_to "/events/#{@event.id}/solutions" }
+        format.json { render :edit, status: :created, location: @solution }
+      end
+    else
+      respond_to do |format|
+        if @solution.save
+          flash[:success] = 'Solution was successfully created.'
+          failed_answers = score(event_id, @solution.text)
 
-        format.html { redirect_to "/events/#{event_id}/solutions" }
-        format.json { render :show, status: :created, location: @solution }
-      else
-        format.html { render :new }
-        format.json { render json: @solution.errors, status: :unprocessable_entity }
+          format.html { redirect_to "/events/#{event_id}/solutions" }
+          format.json { render :show, status: :created, location: @solution }
+        else
+          format.html { render :new }
+          format.json { render json: @solution.errors, status: :unprocessable_entity }
+        end
       end
     end
   end

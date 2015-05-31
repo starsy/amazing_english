@@ -2,7 +2,7 @@
 
 
 <h1>Listing Solutions
-  <% if @solutions.empty? || @solutions[0].nil? %>
+  <% if !@solutions || @solutions.empty? || @solutions[0].nil? %>
     <%= link_to new_event_solutions_path(params[:id]) do %>
       <span class="glyphicon glyphicon-plus small"></span>
     <% end %>
