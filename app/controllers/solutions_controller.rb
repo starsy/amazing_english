@@ -65,6 +65,8 @@ class SolutionsController < ApplicationController
     respond_to do |format|
       if @solution.save
         flash[:success] = 'Solution was successfully created.'
+        failed_answers = score(event_id, @solution.text)
+
         format.html { redirect_to "/events/#{event_id}/solutions" }
         format.json { render :show, status: :created, location: @solution }
       else
@@ -72,6 +74,26 @@ class SolutionsController < ApplicationController
         format.json { render json: @solution.errors, status: :unprocessable_entity }
       end
     end
+  end
+
+
+  def score (event_id, solution_text)
+    @answers = Answer.where event_id: event_id || []
+
+    failed_answers = []
+    @answers.each do |answer|
+      new_similarity = AnswersHelper::get_similarity(solution_text, answer.text)
+      success = answer.update score: new_similarity
+
+      if !success
+        logger.warn "Unable to update score for answer: #{answer.id}"
+        failed_answers << answer
+      else
+        logger.info "New score for answer: #{answer.id} is #{new_similarity}"
+      end
+    end
+
+    return failed_answers
   end
 
   # PATCH/PUT /solution/1
@@ -92,21 +114,8 @@ class SolutionsController < ApplicationController
       end
     end
 
-    @answers = Answer.where event_id: event_id || []
-
-    failed_answers = []
     sp = solution_params
-    @answers.each do |answer|
-      new_similarity = AnswersHelper::get_similarity(sp[:text], answer.text)
-      success = answer.update score: new_similarity
-
-      if !success
-        logger.warn "Unable to update score for answer: #{answer.id}"
-        failed_answers << answer
-      else
-        logger.info "New score for answer: #{answer.id} is #{new_similarity}"
-      end
-    end
+    failed_answers = score(event_id, sp[:text])
 
     respond_to do |format|
       @solution.update! sp
