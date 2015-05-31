@@ -9,11 +9,16 @@ class Answer < ActiveRecord::Base
     event_id = self.event_id
 
     Answer.where(trainee: trainee, event_id: event_id, is_active: true).each do |answer|
-      logger.info "Inactivate answer: #{answer.id}"
-      answer.update_column :is_active, false
+      logger.info "Inactivate answer id: #{answer.id}"
+      if answer.id.equal? self.id
+        logger.info "Skip updating active status to false for answer id: #{answer.id}"
+      else
+        logger.info "Updating active status to false for answer id: #{answer.id}"
+        answer.update_column(:is_active, false)
+      end
     end
 
-    self.is_active = true
+    self.is_active= true
   end
 
 end
