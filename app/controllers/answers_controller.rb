@@ -61,7 +61,7 @@ class AnswersController < ApplicationController
   # POST /answers
   # POST /answers.json
   def create
-    event_id = params[:event_id]
+    event_id = params[:id]
     @answer = Answer.new(answer_params)
     authorize @answer
 
@@ -89,6 +89,7 @@ class AnswersController < ApplicationController
         format.html { redirect_to "/events" }
         format.json { render :show, status: :created, location: @answer }
       else
+        #format.html { render :new }
         format.html { render :new }
         format.json { render json: @answer.errors, status: :unprocessable_entity }
       end

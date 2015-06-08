@@ -1,5 +1,9 @@
 <h1>Editing Answer</h1>
 
+<%
+   @url = "/events/#{params[:id]}/answers/#{params[:answer_id]}"
+%>
+
 <%= render 'form' %>
 
 <hr>

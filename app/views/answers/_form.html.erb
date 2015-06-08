@@ -1,8 +1,5 @@
-<%
-url = "/events/#{params[:id]}/answers/#{params[:answer_id]}"
-%>
 
-<%= bootstrap_form_for(@answer, url: url) do |f| %>
+<%= bootstrap_form_for(@answer, url: @url) do |f| %>
   <% if @answer.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@answer.errors.count, "error") %> prohibited this answer from being saved:</h2>

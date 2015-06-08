@@ -18,6 +18,7 @@ Rails.application.routes.draw do
       get 'answers/new' => 'answers#new'
       get 'answers/:answer_id' => 'answers#show'
       get 'answers/:answer_id/edit' => 'answers#edit'
+      post 'answers/new' => 'answers#create'
       patch 'answers/:answer_id' => 'answers#update'
       delete 'answers/:answer_id' => 'answers#destroy'
 

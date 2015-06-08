@@ -2,6 +2,7 @@ class Answer < ActiveRecord::Base
   belongs_to :event
   before_create :disable_existing_answers
   before_update :disable_existing_answers
+  validates :text, :trainee, presence: true
 
   def disable_existing_answers
     logger.info "In disable_existing_answers"
