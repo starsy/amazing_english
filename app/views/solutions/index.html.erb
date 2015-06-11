@@ -4,12 +4,12 @@
 <h1>Listing Solutions
   <% if !@solutions || @solutions.empty? || @solutions[0].nil? %>
     <%= link_to new_event_solutions_path(params[:id]) do %>
-      <span class="glyphicon glyphicon-plus small"></span>
+      <span class="glyphicon glyphicon-plus btn btn-xs btn-info"></span>
     <% end %>
   <% end %>
 
   <%= link_to "/events" do %>
-    <span class="glyphicon glyphicon-backward small"></span>
+    <span class="glyphicon glyphicon-backward btn btn-xs btn-info"></span>
   <% end %>
 </h1>
 

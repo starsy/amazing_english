@@ -10,14 +10,21 @@
 
 <div class="nav text-right">
   <% if current_user %>
-    <%= current_user.email %> |
+    <span class="glyphicon glyphicon-user"></span> <%= current_user.email %> |
     <% if current_user.is_admin %>
       <%= link_to "Create User", new_user_path %> |
     <% end %>
     <%= link_to "Edit User", edit_user_path(current_user.id) %> |
-    <%= link_to "Logout", :logout, method: :post %>
+    <%= link_to :logout, method: :post do %>
+      <span class="glyphicon glyphicon-log-out"></span> Logout
+    <% end %>
   <% else %>
-    <%= link_to "Login", :login %>
+
+    <%= link_to :login do %>
+      <span class="glyphicon glyphicon-log-in"></span> Login
+    <% end %>
+
+
   <% end %>
 </div>
 
