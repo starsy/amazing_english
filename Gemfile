@@ -2,6 +2,7 @@ source 'https://ruby.taobao.org'
 #source 'https://rubygems.org'
 
 gem 'matrix'
+gem 'narray'
 gem 'rb-gsl'
 gem 'tf-idf-similarity'
 gem 'diffy'
@@ -11,6 +12,7 @@ gem 'bootstrap_form'
 gem 'autoprefixer-rails'
 gem 'sorcery'
 gem "pundit"
+gem 'therubyracer'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.1'
